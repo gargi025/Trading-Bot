@@ -4,15 +4,15 @@ A Python CLI application for placing orders on the Binance USDT-M Futures Testne
 
 ## Features
 
-- Market Orders
-- Limit Orders
-- Stop Orders (Bonus)
+- Place **Market Orders**
+- Place **Limit Orders**
+- Place **Stop Orders** *(Bonus)*
 - BUY and SELL support
-- Interactive CLI using Typer & Rich
-- Input validation using Pydantic
+- Interactive CLI built with **Typer** and **Rich**
+- Input validation using **Pydantic**
 - Structured logging
-- Configurable environment variables
-- Modular architecture
+- Environment-based configuration
+- Modular architecture with separate client and service layers
 
 ---
 
@@ -42,10 +42,37 @@ Trading-Bot/
 
 ---
 
+## Architecture
+
+```text
+                CLI (Typer + Rich)
+                       │
+                       ▼
+                Order Service
+                       │
+                       ▼
+               Binance Client
+                       │
+                       ▼
+           Binance REST API (HTTPX)
+                       │
+                       ▼
+        Binance USDT-M Futures Testnet
+```
+
+---
+
+## Requirements
+
+- Python 3.10+
+- Binance Futures Testnet API credentials
+
+---
+
 ## Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/gargi025/Trading-Bot.git
 
 cd Trading-Bot
 
@@ -74,20 +101,19 @@ python cli.py
 
 ---
 
-## Example Flow
+## Example
 
-```
-Enter Symbol
-BTCUSDT
+```text
+$ python cli.py
 
-Side
-BUY
+Enter Symbol: BTCUSDT
+Side: BUY
+Order Type: MARKET
+Quantity: 0.01
 
-Order Type
-MARKET
+📋 Order Request Summary
 
-Quantity
-0.01
+Submit this order? y
 ```
 
 ---
@@ -117,9 +143,14 @@ The application validates:
 
 ## Assumptions
 
-- Binance Futures Testnet credentials are required.
-- The Binance endpoint is configurable through environment variables.
-- The application uses direct REST API calls via `httpx`.
+- The application targets the Binance USDT-M Futures Testnet.
+- The Binance endpoint is configurable using the `BINANCE_BASE_URL` environment variable.
+- Valid Binance Testnet API credentials are required to successfully place orders.
+- The application communicates directly with Binance using HTTPX and signed REST API requests.
+
+## Note
+
+The application is implemented against the Binance Futures Testnet endpoint specified in the assignment. Since the endpoint and Testnet credential availability may vary over time, the base URL is configurable through environment variables without requiring code changes.
 
 ---
 

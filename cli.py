@@ -41,15 +41,23 @@ def main():
 
     side = Prompt.ask(
         "[cyan]Side[/cyan]",
-        choices=["BUY", "SELL"],
         default="BUY",
-    )
+    ).upper()
+
+    while side not in ["BUY", "SELL"]:
+        console.print("[bold red]Invalid side. Please enter BUY or SELL.[/bold red]")
+        side = Prompt.ask("[cyan]Side[/cyan]").upper()
 
     order_type = Prompt.ask(
         "[cyan]Order Type[/cyan]",
-        choices=["MARKET", "LIMIT", "STOP"],
         default="MARKET",
-    )
+    ).upper()
+
+    while order_type not in ["MARKET", "LIMIT", "STOP"]:
+        console.print(
+            "[bold red]Invalid order type. Please enter MARKET, LIMIT or STOP.[/bold red]"
+        )
+        order_type = Prompt.ask("[cyan]Order Type[/cyan]").upper()
 
     quantity = FloatPrompt.ask("[cyan]Quantity[/cyan]")
 
@@ -86,10 +94,16 @@ def main():
     summary.add_row("Quantity", str(order.quantity))
 
     if order.price is not None:
-        summary.add_row("Price", str(order.price))
+        summary.add_row(
+            "Price",
+            f"{order.price:g}",
+        )
 
     if order.stop_price is not None:
-        summary.add_row("Stop Price", str(order.stop_price))
+        summary.add_row(
+            "Stop Price",
+            f"{order.stop_price:g}",
+        )
 
     console.print()
     console.print(summary)
@@ -106,7 +120,7 @@ def main():
     ) as progress:
 
         progress.add_task(
-            description="Submitting order...",
+            description="Connecting to Binance...",
             total=None,
         )
 
@@ -126,15 +140,30 @@ def main():
         table.add_row("Order ID", str(response.get("orderId", "-")))
         table.add_row("Status", response.get("status", "-"))
         table.add_row("Executed Qty", str(response.get("executedQty", "-")))
-        table.add_row("Average Price", str(response.get("avgPrice", "-")))
+        table.add_row(
+            "Average Price",
+            str(response.get("avgPrice") or "-"),
+        )
 
     console.print(table)
     console.print()
 
     if "code" in response:
-        console.print(f"[bold red]❌ Order Failed[/bold red]\n{response['msg']}")
+        console.print(
+            Panel(
+                response["msg"],
+                title="❌ Order Failed",
+                border_style="red",
+            )
+        )
     else:
-        console.print("[bold green]✅ Order placed successfully![/bold green]")
+        console.print(
+            Panel(
+                "Order submitted successfully.",
+                title="✅ Success",
+                border_style="green",
+            )
+        )
 
 
 if __name__ == "__main__":
