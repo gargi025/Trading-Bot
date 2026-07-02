@@ -9,4 +9,4 @@ class Side(str, Enum):
 class OrderType(str, Enum):
     MARKET = "MARKET"
     LIMIT = "LIMIT"
-    STOP_LIMIT = "STOP_LIMIT"
+    STOP_LIMIT = "STOPs"
