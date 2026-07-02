@@ -9,9 +9,7 @@ class OrderService:
         self.client = BinanceClient()
 
     def place_order(self, order: OrderRequest) -> dict:
-        logger.info(
-            f"Processing {order.order_type.value} order for {order.symbol}"
-        )
+        logger.info(f"Processing {order.order_type.value} order for {order.symbol}")
 
         if order.order_type == OrderType.MARKET:
             return self.client.place_market_order(

@@ -24,9 +24,7 @@ class BinanceClient:
 
         self.client = httpx.Client(
             timeout=Config.TIMEOUT,
-            headers={
-                "X-MBX-APIKEY": self.api_key
-            },
+            headers={"X-MBX-APIKEY": self.api_key},
         )
 
         logger.info(f"Using Binance endpoint: {self.base_url}")
@@ -53,9 +51,7 @@ class BinanceClient:
         if response.is_success:
             logger.success("Request completed successfully.")
         else:
-            logger.error(
-                f"Binance Error [{response.status_code}]: {data}"
-            )
+            logger.error(f"Binance Error [{response.status_code}]: {data}")
 
         return data
 

@@ -51,21 +51,15 @@ def main():
         default="MARKET",
     )
 
-    quantity = FloatPrompt.ask(
-        "[cyan]Quantity[/cyan]"
-    )
+    quantity = FloatPrompt.ask("[cyan]Quantity[/cyan]")
 
     price = None
     if order_type in ["LIMIT", "STOP"]:
-        price = FloatPrompt.ask(
-            "[cyan]Limit Price[/cyan]"
-        )
+        price = FloatPrompt.ask("[cyan]Limit Price[/cyan]")
 
     stop_price = None
     if order_type == "STOP":
-        stop_price = FloatPrompt.ask(
-            "[cyan]Stop Price[/cyan]"
-        )
+        stop_price = FloatPrompt.ask("[cyan]Stop Price[/cyan]")
 
     try:
         order = OrderRequest(
@@ -78,9 +72,7 @@ def main():
         )
 
     except Exception as e:
-        console.print(
-            f"[bold red]Validation Error:[/bold red] {e}"
-        )
+        console.print(f"[bold red]Validation Error:[/bold red] {e}")
         raise typer.Exit()
 
     summary = Table(title="📋 Order Request Summary")
@@ -110,8 +102,7 @@ def main():
     service = OrderService()
 
     with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}")
+        SpinnerColumn(), TextColumn("[progress.description]{task.description}")
     ) as progress:
 
         progress.add_task(
@@ -141,13 +132,9 @@ def main():
     console.print()
 
     if "code" in response:
-        console.print(
-            f"[bold red]❌ Order Failed[/bold red]\n{response['msg']}"
-        )
+        console.print(f"[bold red]❌ Order Failed[/bold red]\n{response['msg']}")
     else:
-        console.print(
-            "[bold green]✅ Order placed successfully![/bold green]"
-        )
+        console.print("[bold green]✅ Order placed successfully![/bold green]")
 
 
 if __name__ == "__main__":
